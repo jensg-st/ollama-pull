@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+spec:
+  selector:
+    matchLabels:
+      name: ollama
+  template:
+    metadata:
+      labels:
+        name: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:0.1.29
+        ports:
+        - name: http
+          containerPort: 11434
+          protocol: TCP
+        lifecycle:
+          postStart:
+            exec:
+              command: [ "/bin/sh", "-c", "ollama pull gemma:2b" ]
